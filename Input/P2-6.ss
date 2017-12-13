@@ -1,0 +1,16 @@
+(define (cond_ex_3 choice value)
+  (cond   ((= choice 1) value)
+	  ((= choice 2) (square value))
+	  ((= choice 3) (reciprocal value))
+	  (0)
+	  )
+  )
+
+
+(define (cond_ex_3 choice value)
+  (cond ((= choice 1) value)
+	((= choice 2) (* value value))
+	((= choice 3) (/ 1 value))
+	(0)
+  )
+)
