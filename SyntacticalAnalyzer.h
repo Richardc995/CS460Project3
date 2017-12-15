@@ -43,6 +43,7 @@ class SyntacticalAnalyzer
 	int Any_Other_Token ();
     
     // Firsts sets
+    /*
     set<token_type> defineFirsts;
     set<token_type> moreDefinesFirsts;
     set<token_type> statementFirsts;
@@ -71,7 +72,9 @@ class SyntacticalAnalyzer
 	set<token_type> statementPairBodyFollows;
 	set<token_type> morePairsFollows;
 	set<token_type> actionFollows;
-	set<token_type> anyOtherTokenFollows;
+	set<token_type> anyOtherTokenFollows;*/
+    
+    ofstream cppout;
 };
 	
 #endif

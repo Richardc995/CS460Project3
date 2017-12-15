@@ -28,9 +28,12 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
 	string name = filename;
 	string p2name = name.substr (0, name.length()-3) + ".p2"; 
 	p2file.open (p2name.c_str());
+    string p3name = name.substr(0, name.length()-3) + ".cpp";
+    cppout.open (p3name.c_str());
 	token = lex->GetToken();
     
     // Fill firsts sets
+    /*
     defineFirsts.insert(LPAREN_T);
     moreDefinesFirsts.insert(LPAREN_T);
     token_type stmtFirsts [] = { IDENT_T, LPAREN_T, NUMLIT_T, STRLIT_T, QUOTE_T };
@@ -78,6 +81,7 @@ SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
 				NUMBERP_T, SYMBOLP_T, LISTP_T, ZEROP_T, NULLP_T, STRINGP_T, 
 				PLUS_T, MINUS_T, DIV_T, MULT_T, MODULO_T, EQUALTO_T, GT_T, LT_T, 
 				GTE_T, LTE_T, QUOTE_T, RPAREN_T };
+     */
     
     // Start the analyzer
 	Program ();
@@ -109,6 +113,7 @@ int SyntacticalAnalyzer::Program ()
             << lex->GetTokenName (token) << ", lexeme: " << lex->GetLexeme() << endl;
     
 	int errors = 0;
+    
 	// token should be in firsts of Program
 	// Body of function goes here.
 	p2file << "Using Rule 1" << endl;
