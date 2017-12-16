@@ -25,6 +25,7 @@ class SyntacticalAnalyzer
     private:
 	LexicalAnalyzer * lex;
 	ofstream p2file;
+	ofstream cppout;
 	token_type token;
 	int Program ();
 	int Define ();
@@ -74,7 +75,7 @@ class SyntacticalAnalyzer
 	set<token_type> actionFollows;
 	set<token_type> anyOtherTokenFollows;*/
     
-    ofstream cppout;
+
 };
 	
 #endif

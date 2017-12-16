@@ -581,10 +581,14 @@ int SyntacticalAnalyzer::Action() {
 	switch(token) {
 		case IF_T :
 			p2file << "Using Rule 26" << endl;
+			cppout << "if (";
 			token = lex->GetToken();
 			errors += Statement();
+			cppout << "){\n";
 			errors += Statement();
+			cppout << "}\nelse{\n";
 			errors += Else_Part();
+			cppout << "}\n";
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
 			return errors;
@@ -934,13 +938,10 @@ int SyntacticalAnalyzer::Any_Other_Token() {
                 return errors;
         }
     }
-    //if (found) {
-        token = lex->GetToken();
-        p2file << "Exiting Any_Other_Token function; current token is: "
-        << lex->GetTokenName(token) << endl;
-        return errors;
-    //}
-    /*p2file << "Exiting Any_Other_Token function; current token is: "
-    << lex->GetTokenName(token) << endl;
-    return errors;*/
+	cppout << lex->GetLexeme() << " ";
+    token = lex->GetToken();
+    p2file << "Exiting Any_Other_Token function; current token is: "
+		<< lex->GetTokenName(token) << endl;
+    return errors;
+
 }
