@@ -843,7 +843,7 @@ int SyntacticalAnalyzer::Action() {
 			return errors;
 		case NEWLINE_T :
 			p2file << "Using Rule 51" << endl;
-            cppout << "cout << endl;";
+            cppout << "cout << endl;\n";
 			token = lex->GetToken();
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
