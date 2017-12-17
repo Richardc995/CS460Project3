@@ -33,6 +33,7 @@ class SyntacticalAnalyzer
 	int Define ();
 	int More_Defines ();
 	int Statement_List ();
+	int Statement_List (string op);
 	int Statement ();
 	int Literal ();
 	int Quoted_Literal ();
