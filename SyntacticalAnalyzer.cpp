@@ -304,7 +304,7 @@ int SyntacticalAnalyzer::Statement () {
 
 	if(token == LPAREN_T) {
 		p2file << "Using Rule 9" << endl;
-		cppout << "(";
+		//cppout << "(";
 		token = lex->GetToken();
 		errors += Action();
 		while(token != RPAREN_T && token != EOF_T) {
@@ -314,7 +314,7 @@ int SyntacticalAnalyzer::Statement () {
 			exit(1);;
 			token = lex->GetToken();
 		}
-		cppout << ")";
+		//cppout << ")";
 		token = lex->GetToken();
 	} else {
 		p2file << "Using Rule 7" << endl;
