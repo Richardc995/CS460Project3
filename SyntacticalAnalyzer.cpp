@@ -656,28 +656,36 @@ int SyntacticalAnalyzer::Action() {
 		case NUMBERP_T :
 			p2file << "Using Rule 33" << endl;
 			token = lex->GetToken();
+			cppout << "Object(";
 			errors += Statement();
+			cppout << ").isNumber()";
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
 			return errors;
 		case SYMBOLP_T :
 			p2file << "Using Rule 34" << endl;
+			cppout << "Object(";
 			token = lex->GetToken();
 			errors += Statement();
+			cppout << ").isSymbol()";
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
 			return errors;
 		case LISTP_T :
 			p2file << "Using Rule 35" << endl;
+			cppout << "Object(";
 			token = lex->GetToken();
 			errors += Statement();
+			cppout << ").isList()";
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
 			return errors;
 		case ZEROP_T :
 			p2file << "Using Rule 36" << endl;
+			cppout << "Object(";
 			token = lex->GetToken();
 			errors += Statement();
+			cppout << ").isZero()";
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
 			return errors;
@@ -690,8 +698,10 @@ int SyntacticalAnalyzer::Action() {
 			return errors;
 		case STRINGP_T :
 			p2file << "Using Rule 38" << endl;
+			cppout << "Object(";
 			token = lex->GetToken();
 			errors += Statement();
+			cppout << ").isString()";
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
 			return errors;
@@ -715,7 +725,7 @@ int SyntacticalAnalyzer::Action() {
 		case DIV_T :
 			p2file << "Using Rule 41" << endl;
 			token = lex->GetToken();
-			errors += Statement("/");
+			errors += Statement();
 			errors += Statement_List("/");
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
@@ -773,6 +783,7 @@ int SyntacticalAnalyzer::Action() {
 			return errors;
 		case IDENT_T :
 			p2file << "Using Rule 49" << endl;
+			cppout << lex->GetLexeme(); << " ";
 			token = lex->GetToken();
 			errors += Statement_List();
 			p2file << "Exiting Action function; current token is: "
