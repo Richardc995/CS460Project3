@@ -342,19 +342,19 @@ int SyntacticalAnalyzer::Literal() {
 		case NUMLIT_T:
 			p2file << "Using Rule 10" << endl;
 			found = true;
-			cppout << "Object (" << lex->GetLexeme() << ")";
+			cppout << " Object(" << lex->GetLexeme() << ")";
 			token = lex->GetToken();
 			break;
 		case STRLIT_T:
 			p2file << "Using Rule 11" << endl;
 			found = true;
-			cppout << "Object (" << lex->GetLexeme() << ")";
+			cppout << " Object(" << lex->GetLexeme() << ")";
 			token = lex->GetToken();
 			break;
 		case QUOTE_T:
 			p2file << "Using Rule 12" << endl;
 			found = true;
-			cppout << "Object (\"" << lex->GetLexeme();
+			cppout << " Object(\"" << lex->GetLexeme();
 			token = lex->GetToken();
 			errors += Quoted_Literal();
 			cppout << "\")";
