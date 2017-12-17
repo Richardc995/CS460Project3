@@ -178,7 +178,7 @@ int SyntacticalAnalyzer::Define()
   
   else
     {
-      cppout << "Object " << lex->GetLexeme << "(";
+      cppout << "Object " << lex->GetLexeme() << "(";
       isMain = false;
     }
   
@@ -254,7 +254,7 @@ int SyntacticalAnalyzer::More_Defines()
  * Return value: The amout of errors it found                                   *
  * Description: This function will follow the <stmt_list> item in our grammar   *
  *******************************************************************************/
-int SyntacticalAnalyzer::Statement_List (string op)
+int SyntacticalAnalyzer::Statement_List(string op)
 {
 	p2file << "Entering Stmt_List function; current token is: "
 			<< lex->GetTokenName (token) << ", lexeme: " << lex->GetLexeme() << endl;
@@ -814,7 +814,7 @@ int SyntacticalAnalyzer::Action() {
 			return errors;
 		case IDENT_T :
 			p2file << "Using Rule 49" << endl;
-			cppout << lex->GetLexeme(); << " ";
+			cppout << lex->GetLexeme() << " ";
 			token = lex->GetToken();
 			errors += Statement_List();
 			p2file << "Exiting Action function; current token is: "
@@ -825,7 +825,7 @@ int SyntacticalAnalyzer::Action() {
             cppout << "cout << ";
 			token = lex->GetToken();
 			errors += Statement();
-            cppout << ";"
+			cppout << ";";
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
 			return errors;
