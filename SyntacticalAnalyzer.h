@@ -42,7 +42,9 @@ class SyntacticalAnalyzer
 	int More_Pairs ();
 	int Action ();
 	int Any_Other_Token ();
-    
+
+	bool isMain = false;
+	
     // Firsts sets
     /*
     set<token_type> defineFirsts;

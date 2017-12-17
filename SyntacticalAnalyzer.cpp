@@ -24,16 +24,16 @@ using namespace std;
 *******************************************************************************/
 SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
 {
-	lex = new LexicalAnalyzer (filename);
-	string name = filename;
-	string p2name = name.substr (0, name.length()-3) + ".p2"; 
-	p2file.open (p2name.c_str());
-    string p3name = name.substr(0, name.length()-3) + ".cpp";
-    cppout.open (p3name.c_str());
-	token = lex->GetToken();
-    
-    // Fill firsts sets
-    /*
+  lex = new LexicalAnalyzer (filename);
+  string name = filename;
+  string p2name = name.substr (0, name.length()-3) + ".p2"; 
+  p2file.open (p2name.c_str());
+  string p3name = name.substr(0, name.length()-3) + ".cpp";
+  cppout.open (p3name.c_str());
+  token = lex->GetToken();
+  
+  // Fill firsts sets
+  /*
     defineFirsts.insert(LPAREN_T);
     moreDefinesFirsts.insert(LPAREN_T);
     token_type stmtFirsts [] = { IDENT_T, LPAREN_T, NUMLIT_T, STRLIT_T, QUOTE_T };
@@ -111,13 +111,17 @@ SyntacticalAnalyzer::~SyntacticalAnalyzer ()
 int SyntacticalAnalyzer::Program ()
 {
 	p2file << "Entering Program function; current token is: "
-            << lex->GetTokenName (token) << ", lexeme: " << lex->GetLexeme() << endl;
+	       << lex->GetTokenName (token) << ", lexeme: " << lex->GetLexeme() << endl;
     
 	int errors = 0;
     
 	// token should be in firsts of Program
 	// Body of function goes here.
 	p2file << "Using Rule 1" << endl;
+	cppout << "#include <iostream>\n"
+	       << "#include \"Object.h\"\n"
+	       << "using namespace std\n";
+	
 	errors += Define ();
 	errors += More_Defines ();
 	if (token != EOF_T)
@@ -127,7 +131,7 @@ int SyntacticalAnalyzer::Program ()
 	}
 	// token should be in follows of Program
 	p2file << "Exiting Program function; current token is: "
-					<< lex->GetTokenName (token) << endl;
+	       << lex->GetTokenName (token) << endl;
 	return errors;
 }
 
@@ -140,55 +144,78 @@ int SyntacticalAnalyzer::Program ()
  *******************************************************************************/
 int SyntacticalAnalyzer::Define() 
 {
-	p2file << "Entering Define function; current token is: "
-        << lex->GetTokenName(token) << ", lexeme: " << lex->GetLexeme() << endl;
+  p2file << "Entering Define function; current token is: "
+	 << lex->GetTokenName(token) << ", lexeme: " << lex->GetLexeme() << endl;
+  
+  int errors = 0;
+  p2file << "Using Rule 2" << endl;
+  
+  // token = lex->GetToken();
+  if(token != LPAREN_T){
+    errors++;
+  }
+  
+  token = lex->GetToken();
+  if(token != DEFINE_T){
+    errors++;
+  }
     
-	int errors = 0;
-    p2file << "Using Rule 2" << endl;
-    
-    // token = lex->GetToken();
-    if(token != LPAREN_T){
-        errors++;
+  token = lex->GetToken();
+  if(token != LPAREN_T){
+    errors++;
+  }
+  
+  token = lex->GetToken();
+  if(token != IDENT_T){
+    errors++;
+  }
+
+  if (lex->GetLexeme() == "main")
+    {
+      cppout << "int main(";
+      isMain = true;
     }
-    
-    token = lex->GetToken();
-    if(token != DEFINE_T){
-        errors++;
+  
+  else
+    {
+      cppout << "Object " << lex->GetLexeme << "(";
+      isMain = false;
     }
+  
+  token = lex->GetToken();
+  errors += Param_List();
+  
+  cppout << "){\n";
+  
+  //TODO: go looking for this!!!
+  if(token != RPAREN_T){
+    errors++;
+  }
+  
+  token = lex->GetToken();
+  errors += Statement();
+  
+  //token = lex->GetToken();
+  errors += Statement_List();
     
-    token = lex->GetToken();
-    if(token != LPAREN_T){
-        errors++;
-    }
-    
-    token = lex->GetToken();
-    if(token != IDENT_T){
-        errors++;
-    }
-    
-    token = lex->GetToken();
-    errors += Param_List();
-    
-	
-	//TODO: go looking for this!!!
-    if(token != RPAREN_T){
-        errors++;
-    }
-    
-    token = lex->GetToken();
-    errors += Statement();
-    
-    //token = lex->GetToken();
-    errors += Statement_List();
-    
-    token = lex->GetToken();
-    if(token != RPAREN_T){
-        errors++;
-    }
-    
-    p2file << "Exiting Define function; current token is: " << lex->GetTokenName (token) << endl;
-    
-    return errors;
+  token = lex->GetToken();
+  if(token != RPAREN_T){
+    errors++;
+  }
+
+  if (isMain){
+    cppout << "return 0;\n"
+	   << "}\n";
+  }
+
+  else{
+    cppout << "return __RetVal;\n"
+	   << "}\n";
+  }
+  
+  p2file << "Exiting Define function; current token is: " << lex->GetTokenName (token) << endl;
+  
+  return errors;
 		
 }
 
@@ -266,6 +293,7 @@ int SyntacticalAnalyzer::Statement () {
 	int errors = 0;
 	if(token == IDENT_T) {
 		p2file << "Using Rule 8" << endl;
+		cppout << lex->GetLexeme();
 		token = lex->GetToken();
 		p2file << "Exiting Stmt function; current token is: "
 			<< lex->GetTokenName(token) << endl;
@@ -274,6 +302,7 @@ int SyntacticalAnalyzer::Statement () {
 
 	if(token == LPAREN_T) {
 		p2file << "Using Rule 9" << endl;
+		cppout << "(";
 		token = lex->GetToken();
 		errors += Action();
 		while(token != RPAREN_T && token != EOF_T) {
@@ -283,13 +312,14 @@ int SyntacticalAnalyzer::Statement () {
 			exit(1);;
 			token = lex->GetToken();
 		}
+		cppout << ")\n";
 		token = lex->GetToken();
 	} else {
 		p2file << "Using Rule 7" << endl;
 		errors += Literal();
 	}
 	p2file << "Exiting Stmt function; current token is: "
-			<< lex->GetTokenName(token) << endl;
+	       << lex->GetTokenName(token) << endl;
 	return errors;
 }
 
