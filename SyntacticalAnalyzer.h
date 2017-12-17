@@ -27,6 +27,8 @@ class SyntacticalAnalyzer
 	ofstream p2file;
 	ofstream cppout;
 	token_type token;
+
+	bool first_param;
 	int Program ();
 	int Define ();
 	int More_Defines ();

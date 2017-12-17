@@ -266,6 +266,7 @@ int SyntacticalAnalyzer::Statement_List (string op)
 		p2file << "Using Rule 6" << endl;
 		p2file << "Exiting Stmt_List function; current token is: "
 					<< lex->GetTokenName (token) << endl;
+		first_param = false;
 		return errors;
 	}
 	p2file << "Using Rule 5" << endl;
@@ -340,18 +341,22 @@ int SyntacticalAnalyzer::Literal() {
 		case NUMLIT_T:
 			p2file << "Using Rule 10" << endl;
 			found = true;
+			cppout << "Object (" << lex->GetLexeme() << ")";
 			token = lex->GetToken();
 			break;
 		case STRLIT_T:
 			p2file << "Using Rule 11" << endl;
 			found = true;
+			cppout << "Object (" << lex->GetLexeme() << ")";
 			token = lex->GetToken();
 			break;
 		case QUOTE_T:
 			p2file << "Using Rule 12" << endl;
 			found = true;
+			cppout << "Object (\"" << lex->GetLexeme();
 			token = lex->GetToken();
 			errors += Quoted_Literal();
+			cppout << "\")";
 			break;
 		default:
 			token = lex->GetToken();
@@ -439,17 +444,23 @@ int SyntacticalAnalyzer::Param_List() {
     
     if(token == RPAREN_T) {
         p2file << "Using Rule 17" << endl;
-        
         p2file << "Exiting Param_List function; current token is: " << lex->GetTokenName (token) << endl;
         return errors;
     } else {
         while(token != IDENT_T) {
             errors++;
             lex->ReportError ("Error in P List Missing Ident");
-            exit(1);;
+            exit(1);
             token = lex->GetToken();
         }
         p2file << "Using Rule 16" << endl;
+		if (first_param) {
+			cppout << "Object " << lex->GetLexeme() << " ";
+			first_param = false;
+		}
+		else{
+			cppout << ",Object " <<lex->GetLexeme()<<" ";
+		}
         token = lex->GetToken();
         errors += Param_List();
     }
@@ -814,7 +825,7 @@ int SyntacticalAnalyzer::Action() {
 			return errors;
 		case IDENT_T :
 			p2file << "Using Rule 49" << endl;
-			cppout << lex->GetLexeme(); << " ";
+			cppout << lex->GetLexeme() << " ";
 			token = lex->GetToken();
 			errors += Statement_List();
 			p2file << "Exiting Action function; current token is: "
@@ -825,7 +836,7 @@ int SyntacticalAnalyzer::Action() {
             cppout << "cout << ";
 			token = lex->GetToken();
 			errors += Statement();
-            cppout << ";"
+            cppout << ";\n";
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
 			return errors;
