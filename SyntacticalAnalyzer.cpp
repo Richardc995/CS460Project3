@@ -314,7 +314,7 @@ int SyntacticalAnalyzer::Statement () {
 			exit(1);;
 			token = lex->GetToken();
 		}
-		cppout << ")\n";
+		cppout << ")";
 		token = lex->GetToken();
 	} else {
 		p2file << "Using Rule 7" << endl;
