@@ -14,7 +14,7 @@
 #include <fstream>
 #include <set>
 #include "LexicalAnalyzer.h"
-
+#include "SetLimits.h"
 using namespace std;
 
 class SyntacticalAnalyzer 

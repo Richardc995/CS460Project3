@@ -24,6 +24,7 @@ using namespace std;
  *******************************************************************************/
 SyntacticalAnalyzer::SyntacticalAnalyzer (char * filename)
 {
+	SetLimits();
 	lex = new LexicalAnalyzer (filename);
 	string name = filename;
 	string p2name = name.substr (0, name.length()-3) + ".p2"; 
