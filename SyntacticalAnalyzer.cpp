@@ -272,7 +272,7 @@ int SyntacticalAnalyzer::Statement_List(string op)
 	}
 	p2file << "Using Rule 5" << endl;
 	errors += Statement();
-	if(token == RPAREN_T) {
+	if(token != RPAREN_T) {
 	  cppout << " " << op << " ";
 	}
 	errors += Statement_List(op);
@@ -760,7 +760,7 @@ int SyntacticalAnalyzer::Action() {
 		case MINUS_T :
 			p2file << "Using Rule 40" << endl;
 			token = lex->GetToken();
-			cppout << "-";
+			//cppout << "-";
 			errors += Statement_List("-");
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
@@ -768,7 +768,7 @@ int SyntacticalAnalyzer::Action() {
 		case DIV_T :
 			p2file << "Using Rule 41" << endl;
 			token = lex->GetToken();
-			errors += Statement();
+		//	errors += Statement();
 			errors += Statement_List("/");
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
@@ -784,7 +784,7 @@ int SyntacticalAnalyzer::Action() {
 			p2file << "Using Rule 43" << endl;
 			token = lex->GetToken();
 			errors += Statement();
-            cppout << " % ";
+       			cppout << " % ";
 			errors += Statement();
 			p2file << "Exiting Action function; current token is: "
 				<< lex->GetTokenName(token) << endl;
