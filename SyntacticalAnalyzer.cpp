@@ -120,7 +120,9 @@ int SyntacticalAnalyzer::Program ()
 	p2file << "Using Rule 1" << endl;
 	cppout << "#include <iostream>\n"
 		<< "#include \"Object.h\"\n"
+
 		<< "using namespace std;\n";
+
 
 	errors += Define ();
 	errors += More_Defines ();
@@ -276,6 +278,7 @@ int SyntacticalAnalyzer::Statement_List(string op)
         if (op != "(" ){
             cppout << " " << op << " ";
         }
+
 	}
 	errors += Statement_List(op);
 	p2file << "Exiting Stmt_List function; current token is: "
@@ -297,10 +300,12 @@ int SyntacticalAnalyzer::Statement () {
 	int errors = 0;
 	if(token == IDENT_T) {
 		p2file << "Using Rule 8" << endl;
+		cppout << "(";
 		cppout << lex->GetLexeme();
 		token = lex->GetToken();
 		p2file << "Exiting Stmt function; current token is: "
 			<< lex->GetTokenName(token) << endl;
+		cppout << ")";
 		return errors;
 	}
 
@@ -308,6 +313,10 @@ int SyntacticalAnalyzer::Statement () {
 		p2file << "Using Rule 9" << endl;
 
 		token = lex->GetToken();
+		if (lex->GetLexeme() != "display" && lex->GetLexeme() != "newline"){ 
+			isDisplay = true;
+			cppout << "(";
+		}
 		errors += Action();
 		while(token != RPAREN_T && token != EOF_T) {
 
@@ -316,14 +325,20 @@ int SyntacticalAnalyzer::Statement () {
 			exit(1);;
 			token = lex->GetToken();
 		}
-		//cppout << ")";
+		if (!isDisplay)
+			cppout << ")";
 		token = lex->GetToken();
-	} else {
+	} 
+	else {
+	        cppout << "(";
 		p2file << "Using Rule 7" << endl;
 		errors += Literal();
+		cppout << ")";
 	}
+
 	p2file << "Exiting Stmt function; current token is: "
 		<< lex->GetTokenName(token) << endl;
+
 	return errors;
 }
 

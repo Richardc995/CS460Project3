@@ -47,6 +47,7 @@ class SyntacticalAnalyzer
 	int Any_Other_Token ();
 
 	bool isMain = false;
+	bool isDisplay = false;
 	
     // Firsts sets
     /*
