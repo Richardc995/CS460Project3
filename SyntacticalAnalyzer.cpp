@@ -294,6 +294,7 @@ int SyntacticalAnalyzer::Statement_List(string op)
  * Description: This function will follow the <stmt> item in our grammar        *
  *******************************************************************************/
 int SyntacticalAnalyzer::Statement () {
+    bool disp = true;
 	p2file << "Entering Stmt function; current token is: "
 		<< lex->GetTokenName (token) << ", lexeme: " << lex->GetLexeme() << endl;
 
@@ -313,19 +314,19 @@ int SyntacticalAnalyzer::Statement () {
 		p2file << "Using Rule 9" << endl;
 
 		token = lex->GetToken();
-		if (lex->GetLexeme() != "display" && lex->GetLexeme() != "newline"){ 
-			isDisplay = true;
+		if (token != DISPLAY_T && token != NEWLINE_T){
 			cppout << "(";
+            disp = false;
 		}
-		errors += Action();
+        errors += Action();
 		while(token != RPAREN_T && token != EOF_T) {
 
 			errors++;
 			lex->ReportError ("Missing ) after action");
-			exit(1);;
+			exit(1);
 			token = lex->GetToken();
 		}
-		if (!isDisplay)
+		if (!disp)
 			cppout << ")";
 		token = lex->GetToken();
 	} 
